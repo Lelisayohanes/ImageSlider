@@ -1,3 +1,4 @@
+import CardSlider from "./Components/Slider"
 
 
 function App() {
@@ -6,7 +7,7 @@ function App() {
   return (
     <>
      <h1>This is Image slider</h1>
-      
+      <CardSlider/>
     </>
   )
 }
