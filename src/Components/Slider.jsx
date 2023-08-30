@@ -8,7 +8,7 @@ library.add(faAngleLeft, faAngleRight);
 
 const CardSlider = () => {
   const [isDragging, setIsDragging] = useState(false);
-//   const [isAutoPlay, setIsAutoPlay] = useState(false);
+  const [isAutoPlay] = useState(false);
   const [startX, setStartX] = useState(0);
   const [startScrollLeft, setStartScrollLeft] = useState(0);
   const [timeoutId, setTimeoutId] = useState(null);
@@ -121,8 +121,8 @@ const CardSlider = () => {
     };
 
     const autoPlay = () => {
-    //   if (window.innerWidth < 800 || !isAutoPlay) return;
-    if (window.innerWidth < 800) return;
+      if (window.innerWidth < 800 || !isAutoPlay) return;
+    // if (window.innerWidth < 800) return;
       const newTimeoutId = setTimeout(() => carousel.scrollLeft += firstCardWidth, 2500);
       setTimeoutId(newTimeoutId);
     };
@@ -141,7 +141,7 @@ const CardSlider = () => {
       carousel.removeEventListener("scroll", handleInfiniteScroll);
       wrapper.removeEventListener("mouseenter", () => clearTimeout(timeoutId));
     };
-  }, [isDragging,  startX, startScrollLeft, timeoutId]);
+  }, [isDragging, isAutoPlay, startX, startScrollLeft, timeoutId]);
 
   return (
     <div className="wrapper" ref={wrapperRef}>
