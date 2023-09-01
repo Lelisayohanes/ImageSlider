@@ -144,25 +144,38 @@ const CardSlider = () => {
   }, [isDragging, isAutoPlay, startX, startScrollLeft, timeoutId]);
 
   return (
-    <div className="wrapper" ref={wrapperRef}>
-      <i id="left" className="fa-solid" onClick={() => handleArrowClick("left")}>
-      <FontAwesomeIcon icon="angle-left" />
-      </i>
-      <ul className="carousel" ref={carouselRef}>
-        {cardData.map((card, index) => (
-          <li key={index} className="card">
-            <div className="img">
-              <img src={card.imgSrc} alt="img" draggable="false" />
-            </div>
-            <h2>{card.name}</h2>
-            <span>{card.role}</span>
-          </li>
-        ))}
-      </ul>
-      <i id="right" className="fa-solid" onClick={() => handleArrowClick("right")}>
-        <FontAwesomeIcon icon="angle-right" />
-      </i>
-      
+    <div className='whole-slider-container'>
+      <div className='slider-text'>
+        <p>Specialized</p>
+        <h1>Technologies</h1>
+      </div>
+      <div className="wrapper" ref={wrapperRef}>
+        <i
+          id="left"
+          className="fa-solid"
+          onClick={() => handleArrowClick("left")}
+        >
+          <FontAwesomeIcon icon="angle-left" />
+        </i>
+        <ul className="carousel" ref={carouselRef}>
+          {cardData.map((card, index) => (
+            <li key={index} className="card">
+              <div className="img">
+                <img src={card.imgSrc} alt="img" draggable="false" />
+              </div>
+              {/* <h2>{card.name}</h2> */}
+              {/* <span>{card.role}</span> */}
+            </li>
+          ))}
+        </ul>
+        <i
+          id="right"
+          className="fa-solid"
+          onClick={() => handleArrowClick("right")}
+        >
+          <FontAwesomeIcon icon="angle-right" />
+        </i>
+      </div>
     </div>
   );
 };

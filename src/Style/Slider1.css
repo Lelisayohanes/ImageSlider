@@ -9,13 +9,14 @@ img{
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
 }
+
 body{
   display: flex;
   padding: 0 35px;
   min-height: 100vh;
   align-items: center;
   justify-content: center;
- 
+
 }
 .wrapper{
   display: flex;
