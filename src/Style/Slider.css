@@ -13,8 +13,13 @@ body {
   align-items: center;
   justify-content: center;
   height:auto;
-
-  background: #FFFFFF
+  
+  background: #FFFFFF;
+  
+}
+.whole-slider-container{
+  /* background-color: green; */
+  padding-bottom: 8em;
 }
 .slider-text{
   display: flex;

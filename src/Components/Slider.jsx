@@ -1,28 +1,34 @@
-import  { useState, useEffect, useRef } from 'react';
+// Import necessary dependencies and styles
+import { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import '../Style/Slider.css';
 
+// Add Font Awesome icons to the library
 library.add(faAngleLeft, faAngleRight);
 
+// Define the CardSlider component
 const CardSlider = () => {
-  const [isDragging, setIsDragging] = useState(false);
-  const [isAutoPlay] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [startScrollLeft, setStartScrollLeft] = useState(0);
-  const [timeoutId, setTimeoutId] = useState(null);
+  // Define state variables using the useState hook
+  const [isDragging, setIsDragging] = useState(false); // Track if carousel is being dragged
+  const [isAutoPlay] = useState(false); // Control autoplay (constant, set to false)
+  const [startX, setStartX] = useState(0); // Initial X-coordinate when dragging starts
+  const [startScrollLeft, setStartScrollLeft] = useState(0); // Initial scroll position when dragging starts
+  const [timeoutId, setTimeoutId] = useState(null); // Timeout ID for autoplay
 
-  const wrapperRef = useRef(null);
-  const carouselRef = useRef(null);
+  // Create refs for DOM elements
+  const wrapperRef = useRef(null); // Ref for the wrapper div
+  const carouselRef = useRef(null); // Ref for the carousel ul
 
-
-
+  // Function to handle left and right arrow button clicks
   const handleArrowClick = (btnId) => {
     const carousel = carouselRef.current;
     const firstCardWidth = carousel.querySelector('.card').offsetWidth;
     carousel.scrollLeft += btnId === "left" ? -firstCardWidth : firstCardWidth;
   };
+
+  // Data for individual cards in the carousel
   const cardData = [
     {
       imgSrc: '../../src/assets/angular-logo-icon-png-svg 1.png',
@@ -56,18 +62,17 @@ const CardSlider = () => {
     }
   ];
 
+  // useEffect hook to set up event listeners and perform initialization
   useEffect(() => {
-    const wrapper = wrapperRef.current;
-    const carousel = carouselRef.current;
+    const wrapper = wrapperRef.current; // Reference to the wrapper div
+    const carousel = carouselRef.current; // Reference to the carousel ul
 
+    const carouselChildrens = [...carousel.children]; // List of carousel items
 
-    const carouselChildrens = [...carousel.children];
+    const firstCardWidth = carousel.querySelector('.card').offsetWidth; // Width of the first card
+    const cardPerView = Math.round(carousel.offsetWidth / firstCardWidth); // Number of cards visible per view
 
-    const firstCardWidth = carousel.querySelector('.card').offsetWidth;
-    const cardPerView = Math.round(carousel.offsetWidth / firstCardWidth);
-
-   
-
+    // Clone the carousel items for infinite scrolling
     carouselChildrens.slice(-cardPerView).reverse().forEach(card => {
       carousel.insertAdjacentHTML("afterbegin", card.outerHTML);
     });
@@ -76,18 +81,19 @@ const CardSlider = () => {
       carousel.insertAdjacentHTML("beforeend", card.outerHTML);
     });
 
+    // Disable transition during initialization
     carousel.classList.add("no-transition");
     carousel.scrollLeft = carousel.offsetWidth;
     carousel.classList.remove("no-transition");
 
+    // Select arrow buttons and add event listeners
     const arrowBtns = document.querySelectorAll(".wrapper i");
-
-   
 
     arrowBtns.forEach((btn) => {
       btn.addEventListener("click", () => handleArrowClick(btn.id));
     });
 
+    // Event handlers for dragging functionality
     const handleDragStart = (e) => {
       setIsDragging(true);
       carousel.classList.add("dragging");
@@ -105,6 +111,7 @@ const CardSlider = () => {
       carousel.classList.remove("dragging");
     };
 
+    // Handle infinite scrolling
     const handleInfiniteScroll = () => {
       if (carousel.scrollLeft === 0) {
         carousel.classList.add("no-transition");
@@ -120,20 +127,22 @@ const CardSlider = () => {
       if (!wrapper.matches(":hover")) autoPlay();
     };
 
+    // Implement autoplay functionality
     const autoPlay = () => {
       if (window.innerWidth < 800 || !isAutoPlay) return;
-    // if (window.innerWidth < 800) return;
       const newTimeoutId = setTimeout(() => carousel.scrollLeft += firstCardWidth, 2500);
       setTimeoutId(newTimeoutId);
     };
     autoPlay();
 
+    // Add event listeners
     carousel.addEventListener("mousedown", handleDragStart);
     carousel.addEventListener("mousemove", handleDragging);
     document.addEventListener("mouseup", handleDragStop);
     carousel.addEventListener("scroll", handleInfiniteScroll);
     wrapper.addEventListener("mouseenter", () => clearTimeout(timeoutId));
 
+    // Clean up event listeners when the component unmounts
     return () => {
       carousel.removeEventListener("mousedown", handleDragStart);
       carousel.removeEventListener("mousemove", handleDragging);
@@ -143,6 +152,7 @@ const CardSlider = () => {
     };
   }, [isDragging, isAutoPlay, startX, startScrollLeft, timeoutId]);
 
+  // Render the component with JSX
   return (
     <div className='whole-slider-container'>
       <div className='slider-text'>
@@ -180,5 +190,5 @@ const CardSlider = () => {
   );
 };
 
+// Export the CardSlider component
 export default CardSlider;
-
